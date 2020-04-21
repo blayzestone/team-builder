@@ -1,6 +1,14 @@
 import React from 'react';
 
-function App({ values, onInputChange, onSubmit }) {
+function App({ values, onInputChange, onSubmit, memberToEdit, editMember }) {
+  const roles = [
+    'Frontend Engineer',
+    'Backend Engineer',
+    'Data Scientist',
+    'UX Designer',
+    'Project Manager',
+    'Shareholder',
+  ];
   return(
     <form>
       <h1>Add a team member</h1>
@@ -22,14 +30,22 @@ function App({ values, onInputChange, onSubmit }) {
       <select onChange={onInputChange}
         name='role'
       >
-        <option value='Frontend Engineer'>Frontend Engineer</option>
-        <option value='Backend Engineer'>Backend Engineer</option>
-        <option value='Data Scientist'>Data Scientist</option>
-        <option value='UX Designer'>UX Designer</option>
-        <option value='Shareholder'>Shareholder</option>
+        {roles.map((role, index) => {
+          return(
+            <option key={index}
+              selected={memberToEdit && memberToEdit.role === role ? true : false}
+            >{role}</option>
+          );
+        })}
       </select></label>
 
-      <button onClick={onSubmit}>submit</button>
+      <button onClick={evt => {
+        if(memberToEdit) {
+          return editMember(evt);
+        } else {
+          return onSubmit(evt);
+        }
+      }}>submit</button>
     </form>
   );
 }

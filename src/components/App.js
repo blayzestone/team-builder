@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Form from './Form';
 
 function App() {
@@ -9,16 +9,19 @@ function App() {
   };
   const initialTeam = [
     {
+      id: 0,
       name: 'John',
       email: 'john@gmail.com',
       role: 'Frontend Engineer',
     },
     {
+      id: 1,
       name: 'Katie',
       email: 'katie@gmail.com',
       role: 'Data Scientist',
     },
     {
+      id: 2,
       name: 'Jason',
       email: 'jason@gmail.com',
       role: 'Backend Engineer',
@@ -27,6 +30,13 @@ function App() {
 
   const [formData, setFormData] = useState(initialFormData);
   const [teamMemberList, setTeamMemberList] = useState(initialTeam);
+  const [memberToEdit, setMemberToEdit] = useState(null);
+
+  useEffect(() => {
+    if(memberToEdit) {
+      setFormData(memberToEdit);
+    }
+  }, [memberToEdit]);
 
   const onInputChange = evt => {
     const name = evt.target.name;
@@ -39,9 +49,31 @@ function App() {
 
   const onSubmit = evt => {
     evt.preventDefault();
-    setTeamMemberList([...teamMemberList, formData]);
+    const newTeamMemberId = teamMemberList.length;
+    const newTeamMemberData = {
+      ...formData,
+      id: newTeamMemberId,
+    }
+    setTeamMemberList([...teamMemberList, newTeamMemberData]);
     setFormData(initialFormData);
   }
+
+  const editMember = evt => {
+    evt.preventDefault();
+
+    const newTeamMemberList = teamMemberList.map(teamMember => {
+      if(teamMember.id === memberToEdit.id) {
+        return formData;
+      } else {
+        return teamMember;
+      }
+    })
+
+    setMemberToEdit(null);
+    setFormData(initialFormData);
+    return setTeamMemberList(newTeamMemberList);
+  }
+
 
   return (
     <div className="App">
@@ -50,9 +82,16 @@ function App() {
           <h2>{teamMember.name}</h2>
           <p>{teamMember.email}</p>
           <p>{teamMember.role}</p>
+          <button onClick={() => setMemberToEdit(teamMember)}>Edit</button>
         </div>
         ))}
-        <Form values={formData} onInputChange={onInputChange} onSubmit={onSubmit}/>
+        <Form 
+          values={formData} 
+          onInputChange={onInputChange} 
+          onSubmit={onSubmit} 
+          memberToEdit={memberToEdit}
+          editMember={editMember}
+        />
     </div>
   );
 }
