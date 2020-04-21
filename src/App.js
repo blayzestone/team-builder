@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 
 function App() {
-  const [teamMembers, setTeamMembers] = useState([
+  const [teamMemberList, setTeamMemberList] = useState([
     {
       name: 'John',
       email: 'john@gmail.com',
@@ -22,7 +22,7 @@ function App() {
 
   return (
     <div className="App">
-      {teamMembers.map(teamMember => (
+      {teamMemberList.map(teamMember => (
         <div>
           <h2>{teamMember.name}</h2>
           <p>{teamMember.email}</p>
