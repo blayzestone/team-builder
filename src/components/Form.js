@@ -1,6 +1,14 @@
 import React from 'react';
 
-function App({ values, onInputChange, onSubmit, memberToEdit, editMember }) {
+function App(props) {
+  const { 
+    values, 
+    onInputChange, 
+    onSubmit, 
+    memberToEdit, 
+    editMember 
+  } = props;
+  
   const roles = [
     'Frontend Engineer',
     'Backend Engineer',
@@ -33,6 +41,7 @@ function App({ values, onInputChange, onSubmit, memberToEdit, editMember }) {
         {roles.map((role, index) => {
           return(
             <option key={index}
+            // Make the default role of the dropdown be the role of the member being edited if there is one
               selected={memberToEdit && memberToEdit.role === role ? true : false}
             >{role}</option>
           );
@@ -40,7 +49,7 @@ function App({ values, onInputChange, onSubmit, memberToEdit, editMember }) {
       </select></label>
 
       <button onClick={evt => {
-        if(memberToEdit) {
+        if(memberToEdit) { // If a team member is being edited when the button is clicked callback is editMember
           return editMember(evt);
         } else {
           return onSubmit(evt);

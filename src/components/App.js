@@ -49,6 +49,8 @@ function App() {
 
   const onSubmit = evt => {
     evt.preventDefault();
+
+    // create a new team member with a unique id
     const newTeamMemberId = teamMemberList.length;
     const newTeamMemberData = {
       ...formData,
@@ -61,7 +63,7 @@ function App() {
   const editMember = evt => {
     evt.preventDefault();
 
-    const newTeamMemberList = teamMemberList.map(teamMember => {
+    const updtatedTeamMemberList = teamMemberList.map(teamMember => {
       if(teamMember.id === memberToEdit.id) {
         return formData;
       } else {
@@ -69,9 +71,10 @@ function App() {
       }
     })
 
+    // Reset state but with the updated team member list
     setMemberToEdit(null);
     setFormData(initialFormData);
-    return setTeamMemberList(newTeamMemberList);
+    return setTeamMemberList(updtatedTeamMemberList);
   }
 
 
@@ -82,7 +85,9 @@ function App() {
           <h2>{teamMember.name}</h2>
           <p>{teamMember.email}</p>
           <p>{teamMember.role}</p>
-          <button onClick={() => setMemberToEdit(teamMember)}>Edit</button>
+          
+          {/* EDIT BUTTON */}
+          <button onClick={() => setMemberToEdit(teamMember)}>Edit</button> 
         </div>
         ))}
         <Form 
